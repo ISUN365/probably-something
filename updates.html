@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updates</title>
+<link rel="icon" type="image/png" href="favicon.png" id="favicon">
+
+<style>
+  
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('background.gif') center/cover no-repeat fixed;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Helvetica Neue", sans-serif;
+    color: white;
+    overflow: hidden;
+  }
+
+ 
+  .glass-box {
+    background: rgba(17, 17, 17, 0.55);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    width: 320px;
+    padding: 20px 24px;
+    margin: 14px;
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  
+  h2 {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+    background: linear-gradient(to right, #ffffff, #e0f0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  ul {
+    margin: 10px 0 0 18px;
+    padding: 0;
+    list-style-type: "– ";
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+
+  .home-btn {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    padding: 10px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 1px rgba(255,255,255,0.5),
+                0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  .home-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(255,255,255,0.4),
+                0 10px 30px rgba(0,0,0,0.6);
+  }
+
+  .home-btn:active {
+    transform: scale(0.97);
+  }
+
+
+  .update-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 1;
+  }
+
+  .ambient {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(88,160,255,0.12), transparent 60%),
+                radial-gradient(circle at 70% 60%, rgba(255,128,220,0.1), transparent 60%);
+    filter: blur(100px);
+    animation: moveGlow 18s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+
+  @keyframes moveGlow {
+    0% { transform: translate(-25%, -25%) scale(1); }
+    50% { transform: translate(-20%, -30%) scale(1.1); }
+    100% { transform: translate(-25%, -20%) scale(1.05); }
+  }
+
+  /* Scrollbar (if content grows) */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.5);
+  }
+</style>
+</head>
+<body>
+
+  <div class="ambient"></div>
+
+  <a href="index.html" class="home-btn">Home</a>
+
+  <div class="update-container">
+    <div class="glass-box" style="animation-delay: 0.1s;">
+      <h2>Updates</h2>
+      <ul>
+        <li>Redesigned the homepage</li>
+        <li>Added the updates page</li>
+        <li>Linked my YouTube account</li>
+        
+      </ul>
+    </div>
+
+    <div class="glass-box" style="animation-delay: 0.3s;">
+      <h2>Planned Updates</h2>
+      <ul>
+        <li>Linking more social media accounts</li>
+        <li>Maybe? linking email (no spam >:/)</li>
+        <li>Adding more subpages</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
