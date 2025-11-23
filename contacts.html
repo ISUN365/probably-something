@@ -1,137 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contacts</title>
-<link type="image/png" rel="shortcut icon" href="favicon.png" id="favicon"/>
-
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background: url("background.gif") center/cover no-repeat fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
-    color: white;
-    overflow-x: hidden;
-    opacity: 0;
-    transition: opacity 0.45s ease;
-  }
-  body.fade-in {
-    opacity: 1;
-  }
-  .home-btn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 10px 18px;
-    font-size: 1em;
-    border-radius: 80px;
-    border: 2px solid rgba(255,255,255,0.6);
-    background: rgba(17, 17, 17, 0.55);
-    color: white;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 6px rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: 0.3s ease;
-    text-decoration: none;
-  }
-  .home-btn:hover {
-    background: rgba(17,17,17,0.25);
-    box-shadow: 0 0 18px rgba(255,255,255,0.7);
-    transform: translateY(-2px);
-  }
-
-  .title {
-    margin-top: 100px;
-    font-size: 2.2em;
-    font-weight: 700;
-    text-shadow: 0 0 18px rgba(255,255,255,0.7);
-  }
-
-  .social-grid {
-    margin-top: 40px;
-    width: 90%;
-    max-width: 850px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    padding-bottom: 50px;
-  }
-
-
-  .social-card {
-    padding: 20px 24px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.35);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-    text-align: center;
-    transition: 0.3s ease;
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-  }
-
-  .social-card:hover {
-    transform: translateY(-6px);
-    background: rgba(255,255,255,0.3);
-    box-shadow: 0 16px 40px rgba(255,255,255,0.5);
-  }
-
-
-  .social-name {
-    font-size: 1.3em;
-    font-weight: 600;
-  }
-
-
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.add("fade-in");
-});
-
-document.addEventListener("click", function (e) {
-    const link = e.target.closest("a");
-
-    if (link && link.href && !link.target && !link.href.includes("#")) {
-        e.preventDefault();
-        document.body.classList.add("fade-out");
-        setTimeout(() => {
-            window.location = link.href;
-        }, 300); 
-    }
-});
-</script>
-</head>
-
-<body>
-
-<a href="/" class="home-btn">Home</a>
-
-<div class="title">Contacts</div>
-
-<div class="social-grid">
-
-  <a href="https://youtube.com/@ISUN365" target="_blank" class="social-card">
-    <div class="social-name">YouTube</div>
-  </a>
-
-  <a href="https://instagram.com/@hellosomeguy" target="_blank" class="social-card">
-    <div class="social-name">Instagram</div>
-  </a>
-
-  <a href="https://tiktok.com/@isun698" target="_blank" class="social-card">
-    <div class="social-name">TikTok</div>
-  </a>
-
-</div>
-
-</body>
-</html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts</title>
+    <link type="image/png" rel="shortcut icon" href="favicon.png" id="favicon"/>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background: url("background.gif") center/cover no-repeat fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+        color: white;
+        overflow-x: hidden;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+      body.fade-in {
+        opacity: 1;
+      }
+      .home-btn {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        padding: 10px 18px;
+        font-size: 1em;
+        border-radius: 80px;
+        border: 2px solid rgba(255,255,255,0.6);
+        background: rgba(17, 17, 17, 0.55);
+        color: white;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 6px rgba(255,255,255,0.3);
+        cursor: pointer;
+        transition: 0.3s ease;
+        text-decoration: none;
+      }
+      .home-btn:hover {
+        background: rgba(17,17,17,0.25);
+        box-shadow: 0 0 18px rgba(255,255,255,0.7);
+        transform: translateY(-2px);
+      }
+    
+      .title {
+        margin-top: 100px;
+        font-size: 2.2em;
+        font-weight: 700;
+        text-shadow: 0 0 18px rgba(255,255,255,0.7);
+      }
+    
+      .contact-grid {
+        margin-top: 40px;
+        width: 90%;
+        max-width: 850px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+        padding-bottom: 50px;
+      }
+    
+    
+      .social-card {
+        padding: 20px 24px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.35);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        text-align: center;
+        transition: 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+      }
+    
+      .social-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255,255,255,0.3);
+        box-shadow: 0 16px 40px rgba(255,255,255,0.5);
+      }
+    
+    
+      .social-name {
+        font-size: 1.3em;
+        font-weight: 600;
+      }
+    
+    
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          document.body.classList.add("fade-in");
+      });
+      
+      document.addEventListener("click", function (e) {
+          const link = e.target.closest("a");
+      
+          if (link && link.href && !link.target && !link.href.includes("#")) {
+              e.preventDefault();
+              document.body.classList.add("fade-out");
+              setTimeout(() => {
+                  window.location = link.href;
+              }, 300); 
+          }
+       document.addEventListener('keydown', function(event) {
+            if ((event.ctrlKey || event.shiftKey) && event.key === "I") {
+              event.preventDefault();
+              console.log('who tf do you think you are.');
+              alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+              
+            }
+            if ((event.ctrlKey || event.metaKey) && event.key === "u") {
+              event.preventDefault();
+              console.log('who tf do you think you are.');
+              alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+            }
+            if (event.key === "F12") {
+              event.preventDefault();
+              console.log('who tf do you think you are');
+              alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+            }
+      });
+    </script>
+  </head>
+  <body>
+    <a href="/" class="home-btn">Home</a>
+    <div class="title">Contacts</div>
+    <div class="contact-grid">
+      <a href="https://youtube.com/@ISUN365" target="_blank" class="social-card">
+        <div class="social-name">YouTube</div>
+      </a>
+      <a href="https://instagram.com/@hellosomeguy" target="_blank" class="social-card">
+        <div class="social-name">Instagram</div>
+      </a>
+      <a href="https://tiktok.com/@isun698" target="_blank" class="social-card">
+        <div class="social-name">TikTok</div>
+      </a>
+    </div>
+    </body>
+  </html>
