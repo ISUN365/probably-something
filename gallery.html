@@ -272,6 +272,24 @@ document.addEventListener("click", function (e) {
         if (e.key === "ArrowRight") nextImage();
         if (e.key === "ArrowLeft") prevImage();
         if (e.key === "Escape") closeViewer();
+
+     document.addEventListener('keydown', function(event) {
+      if ((event.ctrlKey || event.shiftKey) && event.key === "I") {
+        event.preventDefault();
+        console.log('who tf do you think you are.');
+        alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+        
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === "u") {
+        event.preventDefault();
+        console.log('who tf do you think you are.');
+        alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+      }
+      if (event.key === "F12") {
+        event.preventDefault();
+        console.log('who tf do you think you are');
+        alert("You're quite curious arent you? (Imagine attempting to steal code:/)");
+      }
     });
 </script>
 
