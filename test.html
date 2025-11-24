@@ -114,7 +114,6 @@ I do random experiments here-->
 </div>
 
 <audio id="player" src="ssVid.net--你离开的那天.mp3"></audio>
-
 <script>
 const audio = document.getElementById("player");
 const waveform = document.getElementById("waveform");
@@ -130,12 +129,24 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const source = audioContext.createMediaElementSource(audio);
 const analyser = audioContext.createAnalyser();
 
-analyser.fftSize = 128; 
+analyser.fftSize = 128;
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
 source.connect(analyser);
 analyser.connect(audioContext.destination);
+
+function getVolume() {
+    let total = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+        total += dataArray[i] * dataArray[i];
+    }
+    
+    const rms = Math.sqrt(total / bufferLength);
+
+    return rms / 255; 
+}
 
 function renderWaveform() {
     requestAnimationFrame(renderWaveform);
@@ -143,10 +154,14 @@ function renderWaveform() {
     analyser.getByteFrequencyData(dataArray);
 
     const bars = document.querySelectorAll(".bar");
+    const volume = getVolume(); /
 
     bars.forEach((bar, i) => {
-        const value = dataArray[i] || 0;
-        const height = (value / 255) * 60;
+        const freqValue = dataArray[i] || 0;
+
+
+        const height = ((freqValue / 255) * 60) * (0.3 + volume * 1.4);
+
         bar.style.height = height + "px";
     });
 }
@@ -161,18 +176,18 @@ document.querySelector('.image-btn').onclick = () => {
 };
 
 audio.onplay = () => {
-    document.querySelectorAll(".bar").forEach(bar => {
-        bar.classList.remove("paused");
-    });
+    document.querySelectorAll(".bar").forEach(bar =>
+        bar.classList.remove("paused")
+    );
     renderWaveform();
 };
+
 audio.onpause = () => {
-    document.querySelectorAll(".bar").forEach(bar => {
-        bar.classList.add("paused");
-    });
+    document.querySelectorAll(".bar").forEach(bar =>
+        bar.classList.add("paused")
+    );
 };
 </script>
-
 
 </body>
 </html>
