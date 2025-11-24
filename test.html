@@ -94,7 +94,6 @@ I do random experiments here-->
     animation: bounce 0.6s ease-in-out infinite alternate;
 }
 
-/* animation */
 @keyframes bounce {
     from { height: 10%; }
     to   { height: 100%; }
@@ -116,35 +115,64 @@ I do random experiments here-->
 
 <audio id="player" src="ssVid.net--你离开的那天.mp3"></audio>
 
-    <script>
-const container = document.getElementById("waveform");
+<script>
 const audio = document.getElementById("player");
+const waveform = document.getElementById("waveform");
+const barCount = 32;
 
-const barCount = 10; 
 for (let i = 0; i < barCount; i++) {
-  let b = document.createElement("div");
-  b.classList.add("bar");
-
-  b.style.animationDuration = (0.4 + Math.random() * 0.8) + "s";
-  container.appendChild(b);
+    let bar = document.createElement("div");
+    bar.classList.add("bar");
+    waveform.appendChild(bar);
 }
 
-function togglePlay() {
-  audio.paused ? audio.play() : audio.pause();
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const source = audioContext.createMediaElementSource(audio);
+const analyser = audioContext.createAnalyser();
+
+analyser.fftSize = 128; 
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+source.connect(analyser);
+analyser.connect(audioContext.destination);
+
+function renderWaveform() {
+    requestAnimationFrame(renderWaveform);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    const bars = document.querySelectorAll(".bar");
+
+    bars.forEach((bar, i) => {
+        const value = dataArray[i] || 0;
+        const height = (value / 255) * 60;
+        bar.style.height = height + "px";
+    });
 }
 
-audio.onpause = () => {
-  document.querySelectorAll(".bar").forEach(bar => {
-    bar.style.animationPlayState = "paused";
-  });
+document.querySelector('.image-btn').onclick = () => {
+    if (audio.paused) {
+        audioContext.resume();
+        audio.play();
+    } else {
+        audio.pause();
+    }
 };
 
 audio.onplay = () => {
-  document.querySelectorAll(".bar").forEach(bar => {
-    bar.style.animationPlayState = "running";
-  });
+    document.querySelectorAll(".bar").forEach(bar => {
+        bar.classList.remove("paused");
+    });
+    renderWaveform();
+};
+audio.onpause = () => {
+    document.querySelectorAll(".bar").forEach(bar => {
+        bar.classList.add("paused");
+    });
 };
 </script>
+
 
 </body>
 </html>
