@@ -113,9 +113,8 @@
           animation: bounce 0.6s ease-in-out infinite alternate;
       }
       .bar.paused {
-        height: 5px;
-        background: rgba(255,255,255,0.8);
-        border-radius: 10px;
+        height: 0px !important;
+        transition: height 0.3s ease;
       }
       @keyframes bounce {
         from{height: 10%;}
@@ -182,37 +181,37 @@
         </ul>
   
     <script>
-    const container = document.getElementById("waveform");
-    const audio = document.getElementById("player");
-    
-    const barCount = 20;
+      const container = document.getElementById("waveform");
+      const audio = document.getElementById("player");
+      
+      const barCount = 12;
   
-    for (let i = 0; i < barCount; i++) {
-        let bar = document.createElement("div");
-        bar.classList.add("bar");
-
-        bar.style.animationDuration = (0.4 + Math.random() * 0.8) + "s";
-    
-        container.appendChild(bar);
-    }
-
-    document.querySelector('.image-btn').onclick = () => {
-        audio.paused ? audio.play() : audio.pause();
-    };
-    
-    audio.onplay = () => {
-        document.querySelectorAll(".bar").forEach(bar => {
-            bar.classList.remove("paused");
-            bar.style.animationPlayState = "running";
-        });
-    };
-    
-    audio.onpause = () => {
-        document.querySelectorAll(".bar").forEach(bar => {
-            bar.style.animationPlayState = "paused";
-            bar.classList.add("paused");
-        });
-    };
+      for (let i = 0; i < barCount; i++) {
+          let bar = document.createElement("div");
+          bar.classList.add("bar");
+  
+          bar.style.animationDuration = (0.4 + Math.random() * 0.8) + "s";
+      
+          container.appendChild(bar);
+      }
+  
+      document.querySelector('.image-btn').onclick = () => {
+          audio.paused ? audio.play() : audio.pause();
+      };
+      
+      audio.onplay = () => {
+          document.querySelectorAll(".bar").forEach(bar => {
+              bar.classList.remove("paused");
+              bar.style.animationPlayState = "running";
+          });
+      };
+      
+      audio.onpause = () => {
+          document.querySelectorAll(".bar").forEach(bar => {
+              bar.style.animationPlayState = "paused";
+              bar.classList.add("paused");
+          });
+      };
     </script>
   </body>
 </html>
