@@ -84,36 +84,12 @@ I do random experiments here-->
           border: none;
           background: #ffffff22;
           backdrop-filter: blur(10px);
-          color: white;
+          color: black;
           cursor: pointer;
         }
 
     </style>
     <script>
-      function playAudio() {
-        var audio = document.getElementById("myAudio");
-        audio.play();
-      }
-    </script>
-    <script>
-      document.addEventListener('keydown', function(event) {
-      if ((event.ctrlKey || event.shiftKey) && event.key === "I") {
-        event.preventDefault();
-        console.log('who tf do you think you are.');
-        sendNotification("What are you doing?", { body: "imagine stealing code dumbahh" });
-        
-    }
-      if ((event.ctrlKey || event.metaKey) && event.key === "u") {
-        event.preventDefault();
-        console.log('who tf do you think you are.');
-        sendNotification("What are you doing?", { body: "imagine stealing code dumbahh" });
-    }
-      if (event.key === "F12") {
-        event.preventDefault();
-        console.log('who tf do you think you are');
-        alert("who tf do you think you are");
-      }
-  });
   const container = document.getElementById("waveform");
   const audio = document.getElementById("player");
   
@@ -145,18 +121,11 @@ I do random experiments here-->
 </script>
   </head>
 <body>
-  <a href="lobby.html" class="home-btn">Home</a>
+  <a href="/" class="home-btn">Home</a>
   <div class="bg"></div>
   
-  <button onclick="playAudio()" type="button">Music</button>
-  
-  <audio id="myAudio">
-    <source src="李毅恩Lye - 體驗券你給的體驗券 賜我片刻纏綿 可附贈的痛卻沒有期限動態歌詞PinyinLyrics.mp3
-" type="audio/mpeg">
-    Your browser does not support the audio element :/
-  </audio>
   <div class="audio-container">
-  <audio id="player" src="your-audio-file.mp3"></audio>
+  <audio id="player" src="李毅恩Lye - 體驗券你給的體驗券 賜我片刻纏綿 可附贈的痛卻沒有期限動態歌詞PinyinLyrics.mp3.mp3"></audio>
 
   <div class="waveform" id="waveform">
   </div>
