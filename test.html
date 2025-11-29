@@ -124,18 +124,27 @@
           align-items: center;
           gap: 10px;
       }
-    .thumb {
-        width: 40px;
-        height: 40px;
-        border-radius: 16px;
-        object-fit: cover;
-        border: 2px solid #ffffff33;
-    }
-    #thumbWrapper {
-        position: relative;
-        width: 90px;
-        height: 90px;
-    }
+.thumbButton {
+    width: 90px;
+    height: 90px;
+    border-radius: 14px;
+    object-fit: cover;
+    cursor: pointer;
+
+    border: 2px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.thumbButton:active {
+    transform: scale(0.92);
+}
+
+.thumbButton.playing {
+    box-shadow: 0 0 18px rgba(255,255,255,0.55), 0 0 30px rgba(0,0,0,0.5);
+}
+
 
     .playOverlay {
         position: absolute;
@@ -204,145 +213,6 @@
       }
     </style>
     <script>
-      const playlist = [
-          { file: "ssVid.net--生分-男版.mp3", thumb: "unnamed(10).jpg" },
-          { file: "sssVid.net--放纵想念.mp3", thumb: "thumb2.jpg" },
-          { file: "song3.mp3", thumb: "thumb3.jpg" }
-      ];
-      
-      let currentSong = 0;
-      
-      let audio; 
-      let thumb;
-
-      function loadSong(index) {
-
-          if (typeof index === 'undefined') index = 0; 
-
-          currentSong = (index + playlist.length) % playlist.length;
-          
-          if (audio && thumb) {
-            audio.src = playlist[currentSong].file;
-            thumb.src = playlist[currentSong].thumb;
-            audio.load();
-
-          }
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-          audio = document.getElementById("audio");
-          thumb = document.getElementById("songThumb");
-
-          document.body.classList.add("fade-in");
-          loadSong(0); 
-
-          document.getElementById("prevSong").onclick = () => loadSong(currentSong - 1);
-          document.getElementById("nextSong").onclick = () => loadSong(currentSong + 1);
-          const container = document.getElementById("waveform");
-          
-          const barCount = 12;
-          let bars = [];
-          let barHeights = new Array(barCount).fill(0);
-          let velocities = new Array(barCount).fill(0);
-          
-          for (let i = 0; i < barCount; i++) {
-              let bar = document.createElement("div");
-              bar.classList.add("bar");
-              bar.style.height = "4px";
-              container.appendChild(bar);
-              bars.push(bar);
-          }
-          
-          let audioCtx = null;
-          let analyser = null;
-          let frequencyData = null;
-          
-          function initAudio() {
-              if (audioCtx) return;
-              try {
-                  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                  analyser = audioCtx.createAnalyser();
-                  analyser.fftSize = 256;
-                  
-                  const src = audioCtx.createMediaElementSource(audio);
-                  src.connect(analyser);
-                  analyser.connect(audioCtx.destination);
-                  
-                  frequencyData = new Uint8Array(analyser.frequencyBinCount);
-                  animateBars(); 
-              } catch (e) {
-                  console.error("Web Audio API not supported or failed to initialize:", e);
-              }
-          }
-          
-          function animateBars() {
-              requestAnimationFrame(animateBars);
-              
-              if (!analyser || audio.paused) return;
-              
-              analyser.getByteFrequencyData(frequencyData);
-              
-              let samplesPerBar = Math.floor(frequencyData.length / barCount);
-              
-              for (let i = 0; i < barCount; i++) {
-                  let sum = 0;
-                  let start = i * samplesPerBar;
-                  let end = Math.min(start + samplesPerBar, frequencyData.length);
-                  for (let j = start; j < end; j++) sum += frequencyData[j];
-                  let volume = sum / samplesPerBar;
-                  
-                  let maxHeight = 40;
-                  let target = (volume / 255) * maxHeight;
-                  let current = barHeights[i];
-                  
-                  let spring = 0.25;
-                  let friction = 0.12;
-                  let bounce = 0.3;
-
-                  if (target > current) {
-                      velocities[i] += (target - current) * spring;
-                  } else {
-                      velocities[i] -= (current - target) * friction;
-
-                  }
-                  
-                  velocities[i] *= 0.82;
-                  current += velocities[i];
-                  
-                  if (current < 0) current = 0; 
-                  
-                  barHeights[i] = current;
-                  
-                  bars[i].style.height = current + "px";
-              }
-          }
-          
-          document.querySelector(".image-btn").onclick = () => {
-
-              initAudio(); 
-              
-              if (audio.paused) {
-                  audio.play().catch(e => console.error("Play failed:", e));
-              } else {
-                  audio.pause();
-              }
-          };
-          
-          audio.onplay = () => {
-              bars.forEach(b => b.classList.remove("paused"));
-
-          };
-          
-          audio.onpause = () => {
-              bars.forEach((bar, i) => {
-                  bar.style.setProperty("--current-height", barHeights[i] + "px");
-                  bar.classList.add("paused");
-              });
-          };
-
-      });
-      
-
       document.addEventListener("click", function (e) {
           const link = e.target.closest("a");
       
@@ -375,11 +245,11 @@
     <div id="audioControls">
         <div id="songSelector">
             <button id="prevSong" class="arrow">❮</button>
-            <img id="songThumb" class="thumb">
+    
+            <img id="songThumb" class="thumbButton" onclick="togglePlayPause()">
+    
             <button id="nextSong" class="arrow">❯</button>
         </div>
-    
-        <button id="playPause" class="playBtn">⏵</button>
     
         <div id="waveform"></div>
     </div>
@@ -398,5 +268,167 @@
             <br>  你成了我的靈魂，我的未來...」</p>
         </ul>
     </div>
-    </body>
+    <script>
+        const playlist = [
+            { file: "ssVid.net--生分-男版.mp3", thumb: "unnamed(10).jpg" },
+            { file: "sssVid.net--放纵想念.mp3", thumb: "thumb2.jpg" },
+            { file: "song3.mp3", thumb: "thumb3.jpg" }
+        ];          
+        let currentSong = 0;
+        
+        let audio; 
+        let thumb;
+        function loadSong(index) {
+  
+          if (typeof index === 'undefined') index = 0; 
+    
+          currentSong = (index + playlist.length) % playlist.length;
+              
+          if (audio && thumb) {
+            audio.src = playlist[currentSong].file;
+            thumb.src = playlist[currentSong].thumb;
+            audio.load();
+    
+          }
+       }
+    
+       document.addEventListener("DOMContentLoaded", () => {
+          audio = document.getElementById("audio");
+          thumb = document.getElementById("songThumb");
+    
+          document.body.classList.add("fade-in");
+          loadSong(0); 
+    
+          document.getElementById("prevSong").onclick = () => loadSong(currentSong - 1);
+          document.getElementById("nextSong").onclick = () => loadSong(currentSong + 1);
+          const container = document.getElementById("waveform");
+              
+          const barCount = 12;
+          let bars = [];
+          let barHeights = new Array(barCount).fill(0);
+          let velocities = new Array(barCount).fill(0);
+              
+          for (let i = 0; i < barCount; i++) {
+              let bar = document.createElement("div");
+              bar.classList.add("bar");
+              bar.style.height = "4px";
+              container.appendChild(bar);
+              bars.push(bar);
+          }
+              
+          let audioCtx = null;
+          let analyser = null;
+          let frequencyData = null;
+              
+          function initAudio() {
+              if (audioCtx) return;
+              try {
+              audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                  analyser = audioCtx.createAnalyser();
+                  analyser.fftSize = 256;
+                      
+                  const src = audioCtx.createMediaElementSource(audio);
+                  src.connect(analyser);
+                  analyser.connect(audioCtx.destination);
+                      
+                  frequencyData = new Uint8Array(analyser.frequencyBinCount);
+                  animateBars(); 
+              } catch (e) {
+                console.error("Web Audio API not supported or failed to initialize:", e);
+              }
+          }
+              
+              function animateBars() {
+                  requestAnimationFrame(animateBars);
+                  
+                  if (!analyser || audio.paused) return;
+                  
+                  analyser.getByteFrequencyData(frequencyData);
+                  
+                  let samplesPerBar = Math.floor(frequencyData.length / barCount);
+                  
+                  for (let i = 0; i < barCount; i++) {
+                      let sum = 0;
+                      let start = i * samplesPerBar;
+                      let end = Math.min(start + samplesPerBar, frequencyData.length);
+                      for (let j = start; j < end; j++) sum += frequencyData[j];
+                      let volume = sum / samplesPerBar;
+                      
+                      let maxHeight = 40;
+                      let target = (volume / 255) * maxHeight;
+                      let current = barHeights[i];
+                      
+                      let spring = 0.25;
+                      let friction = 0.12;
+                      let bounce = 0.3;
+    
+                      if (target > current) {
+                          velocities[i] += (target - current) * spring;
+                      } else {
+                          velocities[i] -= (current - target) * friction;
+    
+                      }
+                      
+                      velocities[i] *= 0.82;
+                      current += velocities[i];
+                      
+                      if (current < 0) current = 0; 
+                      
+                      barHeights[i] = current;
+                      
+                      bars[i].style.height = current + "px";
+                  }
+              }
+              
+              document.querySelector(".image-btn").onclick = () => {
+    
+                  initAudio(); 
+                  
+                  if (audio.paused) {
+                      audio.play().catch(e => console.error("Play failed:", e));
+                  } else {
+                      audio.pause();
+                  }
+              };
+              
+              audio.onplay = () => {
+                  bars.forEach(b => b.classList.remove("paused"));
+    
+              };
+              
+              audio.onpause = () => {
+                  bars.forEach((bar, i) => {
+                      bar.style.setProperty("--current-height", barHeights[i] + "px");
+                      bar.classList.add("paused");
+                  });
+              };
+    
+          });
+          function togglePlayPause() {
+            if (!audioCtx) initAudio();
+        
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+        
+        audio.onplay = () => {
+            document.getElementById("songThumb").classList.add("playing");
+            bars.forEach(b => b.classList.remove("paused"));
+            animateBars();
+        };
+        
+        audio.onpause = () => {
+            document.getElementById("songThumb").classList.remove("playing");
+            bars.forEach((bar, i) => {
+                bar.style.setProperty("--current-height", barHeights[i] + "px");
+                bar.classList.add("paused");
+            });
+        };
+
+      
+      </script>
+  </body>
 </html>
